@@ -1,5 +1,4 @@
 name: Auto Commit Daily
-
 on:
   schedule:
     - cron: '0 17 * * *' # 00:00 VN (UTC+7)
@@ -11,19 +10,18 @@ permissions:
 jobs:
   commit:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Update file
         run: |
-          echo "Updated at $(date)" >> log.txt
+          echo "Updated at $(TZ='Asia/Ho_Chi_Minh' date)" >> log.txt
 
       - name: Commit & push
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
           git add .
-          git commit -m "chore: auto commit $(date)" || echo "no changes"
+          git commit -m "chore: auto commit $(TZ='Asia/Ho_Chi_Minh' date)" || echo "no changes"
           git push
